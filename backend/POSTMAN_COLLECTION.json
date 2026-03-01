@@ -1,0 +1,374 @@
+{
+  "info": {
+    "name": "BUETian's Boighor API",
+    "description": "Complete API collection for testing all backend endpoints",
+    "version": "1.0.0"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variables": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "productId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "requests": [
+    {
+      "name": "USER AUTH",
+      "items": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/users/register",
+            "header": ["Content-Type: application/json"],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"John Doe\", \"email\": \"john@example.com\", \"password\": \"password123\"}"
+            },
+            "description": "Create new user account. Returns token."
+          }
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/users/login",
+            "header": ["Content-Type: application/json"],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"john@example.com\", \"password\": \"password123\"}"
+            },
+            "description": "User login. Save token to {{token}} variable."
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users/profile",
+            "auth": {
+              "type": "bearer",
+              "bearer": [{"key": "token", "value": "{{token}}", "type": "string"}]
+            },
+            "description": "Get authenticated user profile"
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/users/profile",
+            "header": ["Content-Type: application/json"],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{"key": "token", "value": "{{token}}", "type": "string"}]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"Jane Doe\", \"phone\": \"01XXXXXXXXX\", \"address\": \"123 Street\", \"city\": \"Dhaka\", \"zipCode\": \"1234\"}"
+            },
+            "description": "Update user profile information"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ADMIN AUTH",
+      "items": [
+        {
+          "name": "Register Admin",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/admin/register",
+            "header": ["Content-Type: application/json"],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"Admin User\", \"email\": \"admin@example.com\", \"password\": \"admin123\"}"
+            },
+            "description": "Create admin account. Save token to {{adminToken}} variable."
+          }
+        },
+        {
+          "name": "Login Admin",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/admin/login",
+            "header": ["Content-Type: application/json"],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"admin@example.com\", \"password\": \"admin123\"}"
+            },
+            "description": "Admin login. Save token to {{adminToken}} variable."
+          }
+        },
+        {
+          "name": "Get Admin Profile",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/admin/profile",
+            "auth": {
+              "type": "bearer",
+              "bearer": [{"key": "token", "value": "{{adminToken}}", "type": "string"}]
+            },
+            "description": "Get admin profile"
+          }
+        }
+      ]
+    },
+    {
+      "name": "PRODUCTS",
+      "items": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/products?page=1&limit=10&category=fiction",
+            "description": "Get paginated products with optional filters"
+          }
+        },
+        {
+          "name": "Get Categories",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/products/categories",
+            "description": "Get all product categories"
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/products/{{productId}}",
+            "description": "Get single product with reviews"
+          }
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/products",
+            "header": ["Content-Type: application/json"],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{"key": "token", "value": "{{adminToken}}", "type": "string"}]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"title\": \"The Great Gatsby\", \"description\": \"A classic novel\", \"price\": 450, \"category\": \"fiction\", \"stock\": 50, \"image\": \"https://example.com/gatsby.jpg\"}"
+            },
+            "description": "Create new product (admin only). Save _id to {{productId}} variable."
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/products/{{productId}}",
+            "header": ["Content-Type: application/json"],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{"key": "token", "value": "{{adminToken}}", "type": "string"}]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"price\": 500, \"stock\": 30}"
+            },
+            "description": "Update product details (admin only)"
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/products/{{productId}}",
+            "auth": {
+              "type": "bearer",
+              "bearer": [{"key": "token", "value": "{{adminToken}}", "type": "string"}]
+            },
+            "description": "Delete product (admin only)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CART",
+      "items": [
+        {
+          "name": "Get Cart",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/cart",
+            "auth": {
+              "type": "bearer",
+              "bearer": [{"key": "token", "value": "{{token}}", "type": "string"}]
+            },
+            "description": "Get user's shopping cart"
+          }
+        },
+        {
+          "name": "Add to Cart",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/cart",
+            "header": ["Content-Type: application/json"],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{"key": "token", "value": "{{token}}", "type": "string"}]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"productId\": \"{{productId}}\", \"quantity\": 2}"
+            },
+            "description": "Add product to cart"
+          }
+        },
+        {
+          "name": "Update Cart Item",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/cart",
+            "header": ["Content-Type: application/json"],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{"key": "token", "value": "{{token}}", "type": "string"}]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"productId\": \"{{productId}}\", \"quantity\": 5}"
+            },
+            "description": "Update quantity of item in cart"
+          }
+        },
+        {
+          "name": "Remove from Cart",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/cart/{{productId}}",
+            "auth": {
+              "type": "bearer",
+              "bearer": [{"key": "token", "value": "{{token}}", "type": "string"}]
+            },
+            "description": "Remove item from cart"
+          }
+        },
+        {
+          "name": "Clear Cart",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/cart",
+            "auth": {
+              "type": "bearer",
+              "bearer": [{"key": "token", "value": "{{token}}", "type": "string"}]
+            },
+            "description": "Clear entire cart"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ORDERS",
+      "items": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/orders",
+            "header": ["Content-Type: application/json"],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{"key": "token", "value": "{{token}}", "type": "string"}]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"shippingDetails\": {\"name\": \"John Doe\", \"email\": \"john@example.com\", \"phone\": \"01XXXXXXXXX\", \"address\": \"123 Street\", \"city\": \"Dhaka\", \"zipCode\": \"1234\"}}"
+            },
+            "description": "Create order from cart items"
+          }
+        },
+        {
+          "name": "Get My Orders",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/orders/user/orders",
+            "auth": {
+              "type": "bearer",
+              "bearer": [{"key": "token", "value": "{{token}}", "type": "string"}]
+            },
+            "description": "Get all user's orders"
+          }
+        },
+        {
+          "name": "Get Order by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/orders/{{orderId}}",
+            "auth": {
+              "type": "bearer",
+              "bearer": [{"key": "token", "value": "{{token}}", "type": "string"}]
+            },
+            "description": "Get specific order details"
+          }
+        },
+        {
+          "name": "Get All Orders (Admin)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/orders?page=1&limit=10&status=pending",
+            "auth": {
+              "type": "bearer",
+              "bearer": [{"key": "token", "value": "{{adminToken}}", "type": "string"}]
+            },
+            "description": "Get all orders with filtering (admin only)"
+          }
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/orders/{{orderId}}/status",
+            "header": ["Content-Type: application/json"],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{"key": "token", "value": "{{adminToken}}", "type": "string"}]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"status\": \"shipped\"}"
+            },
+            "description": "Update order status (admin only). Status: pending, processing, shipped, delivered, cancelled"
+          }
+        }
+      ]
+    }
+  ]
+}
