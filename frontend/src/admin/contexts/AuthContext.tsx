@@ -22,6 +22,8 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [admin, setAdmin] = useState<Admin | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -34,7 +36,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (token) {
         try {
           // Verify token by fetching profile
-          const response = await fetch('http://localhost:5000/api/admin/profile', {
+          const response = await fetch(`${API}/admin/profile`, {
             headers: {
               'Authorization': `Bearer ${token}`,
             },
@@ -64,7 +66,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/admin/login', {
+      const response = await fetch(`${API}/admin/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
