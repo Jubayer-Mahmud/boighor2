@@ -97,6 +97,7 @@ export default function CheckoutPage() {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/orders`, {
         customerName: `${shippingData.firstName} ${shippingData.lastName}`,
         customerPhone: shippingData.phone,
+        customerAltPhone: shippingData.altPhone,
         customerEmail: shippingData.email,
         customerAddress: fullAddress,
         products: orderProducts,

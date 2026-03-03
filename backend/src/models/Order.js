@@ -17,6 +17,10 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Customer phone is required'],
     },
+    customerAltPhone: {
+      type: String,
+      default: '',
+    },
     customerEmail: {
       type: String,
       default: '',

@@ -16,6 +16,7 @@ interface Order {
   _id: string;
   customerName: string;
   customerPhone: string;
+  customerAltPhone?: string;
   customerEmail?: string;
   customerAddress: string;
   products: OrderProduct[];
@@ -248,6 +249,7 @@ export default function OrdersPage() {
                   <div className="bg-gray-50 rounded-lg p-4 space-y-2">
                     <p><span className="font-medium">Name:</span> {selectedOrder.customerName}</p>
                     <p><span className="font-medium">Phone:</span> {selectedOrder.customerPhone}</p>
+                    {selectedOrder.customerAltPhone && <p><span className="font-medium">Alt Phone:</span> {selectedOrder.customerAltPhone}</p>}
                     {selectedOrder.customerEmail && <p><span className="font-medium">Email:</span> {selectedOrder.customerEmail}</p>}
                     <p><span className="font-medium">Address:</span> {selectedOrder.customerAddress}</p>
                   </div>

@@ -3,7 +3,7 @@ import Order from '../models/Order.js';
 // POST /api/orders — place order (no login required)
 export const createOrder = async (req, res, next) => {
   try {
-    const { customerName, customerPhone, customerEmail, customerAddress, products, totalPrice } = req.body;
+    const { customerName, customerPhone, customerAltPhone, customerEmail, customerAddress, products, totalPrice } = req.body;
 
     if (!customerName || !customerPhone || !customerAddress) {
       return res.status(400).json({ message: 'Please provide customerName, customerPhone, and customerAddress' });
@@ -21,6 +21,7 @@ export const createOrder = async (req, res, next) => {
       user: req.user ? req.user.id : null,
       customerName,
       customerPhone,
+      customerAltPhone: customerAltPhone || '',
       customerEmail: customerEmail || '',
       customerAddress,
       products,
