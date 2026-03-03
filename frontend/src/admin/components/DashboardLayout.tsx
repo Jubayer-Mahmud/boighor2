@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import ProtectedRoute from '@/admin/components/ProtectedRoute';
 import Sidebar from '@/admin/components/Sidebar';

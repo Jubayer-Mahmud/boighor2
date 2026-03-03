@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import DashboardLayout from '@/admin/components/DashboardLayout';
 import adminService from '@/admin/services/adminService';

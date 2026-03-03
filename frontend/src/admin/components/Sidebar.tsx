@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useAuth } from '@/admin/contexts/AuthContext';
 import {
